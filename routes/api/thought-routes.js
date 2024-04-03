@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const { ObjectId } = require('bson');
+const { User, Thought } = require('../../models');
 
 
 // endpoint /api/thoughts
