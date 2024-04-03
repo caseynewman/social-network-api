@@ -1,22 +1,20 @@
 const mongoose = require('mongoose');
-
-// const commentSchema = new mongoose.Schema({
-//     body: {type: String, required: true },
-//     user: {
-//         username: {type: String, required: false},
-//         password: {type: String, required: false},
-//     },
-//     createdAt: {type: Date, default: Date.now}
-// })
+const opts = { toJSON: { virtuals: true } };
+const thoughtSchema = require('./thought-model');
 
 const userSchema = new mongoose.Schema({
-    username: {type: String, required: true},
-    email: {type: String, required: true , },
-    // thoughts: ,
-    // friends: ,
-    createdAt: {type: Date, default: Date.now}
-})
+    username: { type: String, required: true }, // unique, trimmed
+    email: { type: String, required: true, }, // unique, matching validation for valid email
+    thoughts: [thoughtSchema], // array of _id values referencing thought model
+    friends: [userSchema], // array of _id values self-referencing user-model
+}, {
+    virtuals: { // where to add opts
+        friendCount: {
+            get() { return `${this.friends.length}` }
+        }
+    }
+});
 
-const Post = mongoose.model('Post', postSchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports = Post;
+module.exports = User;

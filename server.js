@@ -1,7 +1,7 @@
 const db = require('./config/connection');
 const express = require('express');
 const routes = require('./routes');
-const { User } = require('./models');
+// const { User, Thought } = require('./models');
 
 const PORT = process.env.PORT || 3333
 const app = express();
