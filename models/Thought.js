@@ -6,7 +6,8 @@ const reactionSchema = new mongoose.Schema({
     reactionBody: {
         type: String,
         required: true,
-        // 280 character maximum
+        minlength: 1,
+        maxlength: 280,
     },
     username: { type: String, required: true },
     createdAt: {
@@ -19,7 +20,12 @@ const reactionSchema = new mongoose.Schema({
 });
 
 const thoughtSchema = new mongoose.Schema({
-    thoughtText: { type: String, required: true }, // validate between 1 and 280 characters
+    thoughtText: {
+        type: String,
+        required: true,
+        minlength: 1,
+        maxlength: 280,
+    },
     createdAt: {
         type: Date,
         default: Date.now(),
