@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
     try {
         const newUser = await User.create(req.body);
         console.log(newUser);
-        res.status(200).json({ message: 'New user added successfully! '});
+        res.status(200).json({ message: 'New user added successfully! ' });
     } catch (err) {
         res.status(500).json(err);
     }
@@ -37,12 +37,12 @@ router.post('/', async (req, res) => {
 
 // PUT update single user by _id
 router.put('/:id', async (req, res) => {
-    try{
+    try {
         const updatedUser = await User.updateOne({
             _id: new ObjectId(req.params.id)
         }, req.body);
         console.log(updatedUser);
-        res.status(200).json({ message: 'User updated successfully! '});
+        res.status(200).json({ message: 'User updated successfully! ' });
     } catch (err) {
         res.status(500).json(err);
     }
@@ -55,7 +55,7 @@ router.delete('/:id', async (req, res) => {
             _id: new ObjectId(req.params.id)
         });
         console.log(deletedUser);
-        res.status(200).json({ message: 'User deleted successfully! '});
+        res.status(200).json({ message: 'User deleted successfully! ' });
     } catch {
         res.status(500).json(err);
     }
@@ -81,22 +81,30 @@ router.post('/:userId/friends/:friendId', async (req, res) => {
         }, {
             new: true
         });
-        console.log(userId)
-        console.log(friendId)
-        // if (!user) {
-        //     return res.status(404).json({ message: 'User not found!' });
-        // }
-        user.friends.push(friendId);
-        await user.save();
         res.status(200).json({ message: 'New friend added successfully!' });
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-
-
 // DELETE remove friend from user's friend list
+router.delete('/:userId/friends/:friendId', async (req, res) => {
+    const { userId, friendId } = req.params;
+    try {
+        const user = await User.findOneAndUpdate({
+            _id: req.params.userId
+        }, {
+            $pull: {
+                friends: req.params.friendId
+            }
+        }, {
+            new: true
+        });
+        res.status(200).json({ message: 'Friend successfully removed!' });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
 
 
