@@ -72,7 +72,15 @@ router.delete('/:id', async (req, res) => {
 router.post('/:userId/friends/:friendId', async (req, res) => {
     const { userId, friendId } = req.params;
     try {
-        const user = await User.findById(userId);
+        const user = await User.findOneAndUpdate({
+            _id: req.params.userId
+        }, {
+            $addToSet: {
+                friends: req.params.friendId
+            }
+        }, {
+            new: true
+        });
         console.log(userId)
         console.log(friendId)
         // if (!user) {
