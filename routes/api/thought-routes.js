@@ -6,18 +6,77 @@ const { User, Thought } = require('../../models');
 // endpoint /api/thoughts
 
 // GET all thoughts
+router.get('/', async (req, res) => {
+    try {
+        const thoughtData = await Thought.find({}).lean();
+        res.status(200).json(thoughtData);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // GET a single thought by _id
+router.get('/:id', async (req, res) => {
+    try {
+        const thoughtData = await Thought.findById(req.params.id).lean();
+        res.status(200).json(thoughtData);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // POST new thought - push created thought's _id to the associated user's thoughts array field
+router.post('/', async (req, res) => {
+    try {
+        const newThought = await Thought.create(req.body);
+        //PUSH THOUGHT ID TO ASSOCIATED USER'S THOUGHTS ARRAY FIELD
+        console.log(newThought);
+        res.status(200).json({ message: 'New thought added successfully!' });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+
 // PUT update thought by _id
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedThought = await Thought.updateOne({
+            _id: new ObjectId(req.params.id)
+        }, req.body);
+        console.log(updatedThought);
+        res.status(200).json({ message: 'Thought updated successfully!' });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // DELETE remove thought by _id
-
-
-
+router.delete('/:id', async (req, res) => {
+    try {
+        const deletedThought = await Thought.deleteOne({
+            _id: new ObjectId(req.params.id)
+        });
+        console.log(deletedThought);
+        res.status(200).json({ message: 'Thought deleted successfully!' });
+    } catch {
+        res.status(500).json(err);
+    }
+});
 
 
 // endpoint /api/thoughts/:thoughtId/reactions
 
 // POST create a reaction stored in a single thought's reactions array field
+router.post('/:thoughtId/reactions', async (req, res) => {
+    try {
+
+    } catch (err) {
+
+    }
+});
+
+
 // DELETE to pull and remove a reaction by the reaction's reactionId value
 
 
