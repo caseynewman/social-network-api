@@ -28,19 +28,29 @@ router.get('/:id', async (req, res) => {
 // POST new thought - push created thought's _id to the associated user's thoughts array field
 router.post('/', async (req, res) => {
     try {
-        const newThought = await Thought.create(req.body);
-        //TODO: PUSH THOUGHT ID TO ASSOCIATED USER'S THOUGHTS ARRAY FIELD
+        const newThought = new Thought(req.body);
         const savedThought = await newThought.save();
-        const user = await User.findById(req.body.userId);
-        user.thoughts.push(savedThought._id);
+        const user = await User.findOne({ username: req.body.username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found with this username' });
+        }
         await user.save();
+        await User.findByIdAndUpdate(
+            user._id, {
+            $push: {
+                thoughts: savedThought._id
+            }
+        }, {
+            new: true,
+            runValidators: true
+        }
+        );
         console.log(savedThought);
         res.status(200).json({ message: 'New thought added successfully!' });
     } catch (err) {
         res.status(500).json(err);
     }
 });
-
 
 // PUT update thought by _id
 router.put('/:id', async (req, res) => {
