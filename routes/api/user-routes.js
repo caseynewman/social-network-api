@@ -110,8 +110,6 @@ router.delete('/:userId/friends/:friendId', async (req, res) => {
 module.exports = router
 
 //TODO: figure out virtual issue
-//TODO: post route for new thoughts
 //TODO: 2 routes for reactions
 //TODO: bonus route
 //TODO: fix date format
-//TODO: thoughts aren't generating with get all users?
