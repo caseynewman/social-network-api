@@ -71,7 +71,6 @@ router.delete('/:id', async (req, res) => {
 
 // POST add new friend to user's friend list
 router.post('/:userId/friends/:friendId', async (req, res) => {
-    const { userId, friendId } = req.params;
     try {
         const user = await User.findOneAndUpdate({
             _id: req.params.userId
@@ -90,7 +89,6 @@ router.post('/:userId/friends/:friendId', async (req, res) => {
 
 // DELETE remove friend from user's friend list
 router.delete('/:userId/friends/:friendId', async (req, res) => {
-    const { userId, friendId } = req.params;
     try {
         const user = await User.findOneAndUpdate({
             _id: req.params.userId
@@ -113,5 +111,6 @@ module.exports = router
 
 //TODO: figure out virtual issue
 //TODO: post route for new thoughts
-//TODO: routes for reactions
+//TODO: 2 routes for reactions
 //TODO: bonus route
+//TODO: fix date format

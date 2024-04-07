@@ -29,8 +29,12 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const newThought = await Thought.create(req.body);
-        //PUSH THOUGHT ID TO ASSOCIATED USER'S THOUGHTS ARRAY FIELD
-        console.log(newThought);
+        //TODO: PUSH THOUGHT ID TO ASSOCIATED USER'S THOUGHTS ARRAY FIELD
+        const savedThought = await newThought.save();
+        const user = await User.findById(req.body.userId);
+        user.thoughts.push(savedThought._id);
+        await user.save();
+        console.log(savedThought);
         res.status(200).json({ message: 'New thought added successfully!' });
     } catch (err) {
         res.status(500).json(err);
@@ -69,12 +73,26 @@ router.delete('/:id', async (req, res) => {
 
 // POST create a reaction stored in a single thought's reactions array field
 router.post('/:thoughtId/reactions', async (req, res) => {
+    const { thoughtId } = req.params;
+    const { reactionBody, username } = req.body;
     try {
-
+        const newReaction = {
+            reactionBody,
+            username
+        };
+        const thought = await Thought.findByIdAndUpdate(thoughtId, {
+            $push: {
+                reactions: newReaction
+            }
+        }, {
+            new: true
+        });
     } catch (err) {
-
+        res.status(500).json(err);
     }
 });
+
+
 
 
 // DELETE to pull and remove a reaction by the reaction's reactionId value
