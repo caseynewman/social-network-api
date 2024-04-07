@@ -1,7 +1,7 @@
 const { ObjectId } = require('bson');
 const mongoose = require('mongoose');
 const dayjs = require('dayjs');
-
+const opts = { toJSON: { virtuals: true } };
 
 
 const reactionSchema = new mongoose.Schema({
@@ -38,15 +38,19 @@ const thoughtSchema = new mongoose.Schema({
     },
     username: { type: String, required: true },
     reactions: [reactionSchema],
-}, {
-    virtuals: {
-        reactionCount: {
-            get() { return `${this.reactions.length}` }
-        }
-    },
-    toJSON: {
-        virtuals: true
-    }
+// }, {
+//     virtuals: {
+//         reactionCount: {
+//             get() { return `${this.reactions.length}` }
+//         }
+//     },
+//     toJSON: {
+//         virtuals: true
+//     }
+}, opts);
+
+thoughtSchema.virtual('reactionCount').get(function () {
+    return this.reactions.length;
 });
 
 const Thought = mongoose.model('Thought', thoughtSchema);
