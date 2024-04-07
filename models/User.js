@@ -1,4 +1,6 @@
 const { model, Types, Schema } = require('mongoose');
+const opts = { toJSON: { virtuals: true } };
+
 
 const userSchema = new Schema({
     username: {
@@ -13,23 +15,31 @@ const userSchema = new Schema({
         unique: true,
         match: /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/,
     },
-    thoughts: {
-        type: Types.ObjectId,
-        ref: 'Thought',
-    },
-    friends: {
-        type: Types.ObjectId,
-        ref: 'User',
-    },
-}, {
-    virtuals: {
-        friendCount: {
-            get() { return `${this.friends.length}` }
-        }
-    },
-    toJSON: {
-        virtuals: true
-    }
+    thoughts: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Thought',
+        },
+    ],
+    friends: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        },
+    ],
+    // }, {
+    //     virtuals: {
+    //         friendCount: {
+    //             get() { return `${this.friends.length}` }
+    //         }
+    //     },
+    //     toJSON: {
+    //         virtuals: true
+    //     }
+}, opts);
+
+userSchema.virtual('friendCount').get(function () {
+    return this.friends.length;
 });
 
 const User = model('User', userSchema);
