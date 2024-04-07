@@ -87,12 +87,11 @@ router.post('/:thoughtId/reactions', async (req, res) => {
         }, {
             new: true
         });
+        res.status(200).json({ message: 'Reaction added successfully!' });
     } catch (err) {
         res.status(500).json(err);
     }
 });
-
-
 
 
 // DELETE to pull and remove a reaction by the reaction's reactionId value

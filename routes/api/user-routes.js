@@ -114,3 +114,4 @@ module.exports = router
 //TODO: 2 routes for reactions
 //TODO: bonus route
 //TODO: fix date format
+//TODO: thoughts aren't generating with get all users?
