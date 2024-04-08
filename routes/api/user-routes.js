@@ -56,7 +56,7 @@ router.delete('/:id', async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found!' });
         }
-        await Thought.deleteMany({ userId: req.params.id });
+        await Thought.deleteMany({ username: user.username });
         await User.deleteOne({
             _id: req.params.id
         });
