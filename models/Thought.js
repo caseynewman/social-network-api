@@ -20,7 +20,12 @@ const reactionSchema = new mongoose.Schema({
             return new Date(timestamp).toLocaleString('en')
         }
     },
-});
+}, {
+    toJSON: {
+      getters: true
+    },
+    id: false
+  });
 
 const thoughtSchema = new mongoose.Schema({
     thoughtText: {
@@ -38,16 +43,12 @@ const thoughtSchema = new mongoose.Schema({
     },
     username: { type: String, required: true },
     reactions: [reactionSchema],
-// }, {
-//     virtuals: {
-//         reactionCount: {
-//             get() { return `${this.reactions.length}` }
-//         }
-//     },
-//     toJSON: {
-//         virtuals: true
-//     }
-}, opts);
+},  {
+    toJSON: {
+      getters: true
+    },
+    id: false
+  });
 
 thoughtSchema.virtual('reactionCount').get(function () {
     return this.reactions.length;

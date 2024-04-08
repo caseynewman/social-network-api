@@ -1,6 +1,4 @@
 const { model, Types, Schema } = require('mongoose');
-const opts = { toJSON: { virtuals: true } };
-
 
 const userSchema = new Schema({
     username: {
@@ -27,16 +25,13 @@ const userSchema = new Schema({
             ref: 'User',
         },
     ],
-    // }, {
-    //     virtuals: {
-    //         friendCount: {
-    //             get() { return `${this.friends.length}` }
-    //         }
-    //     },
-    //     toJSON: {
-    //         virtuals: true
-    //     }
-}, opts);
+},
+{
+toJSON: {
+    virtuals: true,
+},
+id: false,
+});
 
 userSchema.virtual('friendCount').get(function () {
     return this.friends.length;

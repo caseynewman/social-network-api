@@ -28,24 +28,19 @@ router.get('/:id', async (req, res) => {
 // POST new thought - push created thought's _id to the associated user's thoughts array field
 router.post('/', async (req, res) => {
     try {
-        const newThought = new Thought(req.body);
-        const savedThought = await newThought.save();
-        const user = await User.findOne({ username: req.body.username });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found with this username' });
-        }
-        await user.save();
-        await User.findByIdAndUpdate(
-            user._id, {
+        const thoughtData = await Thought.create(req.body);
+        const userData = await User.findOneAndUpdate({
+            _id: req.body.userId
+        }, {
             $push: {
-                thoughts: savedThought._id
+                thoughts: thoughtData._id
             }
         }, {
-            new: true,
-            runValidators: true
+            new: true
+        });
+        if (!userData) {
+            return res.status(404).json({ message: 'Thought created but no user with that ID!' });
         }
-        );
-        console.log(savedThought);
         res.status(200).json({ message: 'New thought added successfully!' });
     } catch (err) {
         res.status(500).json(err);
@@ -83,18 +78,15 @@ router.delete('/:id', async (req, res) => {
 
 // POST create a reaction stored in a single thought's reactions array field
 router.post('/:thoughtId/reactions', async (req, res) => {
-    const { thoughtId } = req.params;
-    const { reactionBody, username } = req.body;
     try {
-        const newReaction = {
-            reactionBody,
-            username
-        };
-        const thought = await Thought.findByIdAndUpdate(thoughtId, {
-            $push: {
-                reactions: newReaction
+        const thoughtData = await Thought.findOneAndUpdate({
+            _id: req.params.thoughtId
+        }, {
+            $addToSet: {
+                reactions: req.body
             }
         }, {
+            runValidators: true,
             new: true
         });
         res.status(200).json({ message: 'Reaction added successfully!' });
