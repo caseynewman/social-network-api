@@ -16,15 +16,13 @@ const reactionSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now(),
-        get(timestamp) {
-            return new Date(timestamp).toLocaleString('en')
-        }
+        get: timestamp => dayjs(timestamp).format('MMMM DD, YYYY [at] hh:mm a'),
     },
 }, {
     toJSON: {
       getters: true
     },
-    id: false
+    _id: false
   });
 
 const thoughtSchema = new mongoose.Schema({
@@ -37,9 +35,9 @@ const thoughtSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now(),
-        get(timestamp) {
-            return new Date(timestamp).toLocaleString('en')
-        }
+        get: (timestamp) => {
+            return dayjs(timestamp).format('MMMM DD, YYYY [at] hh:mm a')
+        },
     },
     username: { type: String, required: true },
     reactions: [reactionSchema],
@@ -47,8 +45,7 @@ const thoughtSchema = new mongoose.Schema({
     toJSON: {
       getters: true
     },
-    id: false
-  });
+});
 
 thoughtSchema.virtual('reactionCount').get(function () {
     return this.reactions.length;

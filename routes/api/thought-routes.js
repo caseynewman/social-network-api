@@ -8,7 +8,7 @@ const { User, Thought } = require('../../models');
 // GET all thoughts
 router.get('/', async (req, res) => {
     try {
-        const thoughtData = await Thought.find({}).lean();
+        const thoughtData = await Thought.find({});
         res.status(200).json(thoughtData);
     } catch (err) {
         res.status(500).json(err);
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 // GET a single thought by _id
 router.get('/:id', async (req, res) => {
     try {
-        const thoughtData = await Thought.findById(req.params.id).lean();
+        const thoughtData = await Thought.findById(req.params.id);
         res.status(200).json(thoughtData);
     } catch (err) {
         res.status(500).json(err);

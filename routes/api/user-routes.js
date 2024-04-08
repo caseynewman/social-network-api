@@ -8,7 +8,7 @@ const { User, Thought } = require('../../models');
 // GET all users
 router.get('/', async (req, res) => {
     try {
-        const userData = await User.find({}).lean();
+        const userData = await User.find({});
         res.status(200).json(userData);
     } catch (err) {
         res.status(500).json(err);
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 // GET a single user by _id and populated thought and friend data
 router.get('/:id', async (req, res) => {
     try {
-        const userData = await User.findById(req.params.id).lean();
+        const userData = await User.findById(req.params.id);
         res.status(200).json(userData);
     } catch (err) {
         res.status(500).json(err);
@@ -52,12 +52,18 @@ router.put('/:id', async (req, res) => {
 // DELETE user by _id
 router.delete('/:id', async (req, res) => {
     try {
-        const deletedUser = await User.deleteOne({
-            _id: new ObjectId(req.params.id)
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found!' });
+        }
+        await Thought.deleteMany({ userId: req.params.id });
+        await User.deleteOne({
+            _id: req.params.id
         });
-        console.log(deletedUser);
+        console.log(user);
         res.status(200).json({ message: 'User deleted successfully!' });
     } catch {
+        console.error(err);
         res.status(500).json(err);
     }
 });
@@ -109,8 +115,6 @@ router.delete('/:userId/friends/:friendId', async (req, res) => {
 
 module.exports = router
 
-//TODO: figure out virtual issue
-//TODO: 2 routes for reactions
+//TODO: delete route for reactions
 //TODO: bonus route
 //TODO: fix date format
-//TODO: reactions have two IDs?

@@ -2,6 +2,7 @@
   "dependencies": {
     "dayjs": "^1.11.10",
     "express": "^4.19.2",
-    "mongoose": "^8.2.4"
+    "mongoose": "^8.2.4",
+    "mongoose-lean-virtuals": "^0.9.1"
   }
 }
