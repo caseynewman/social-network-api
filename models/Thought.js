@@ -45,6 +45,7 @@ const thoughtSchema = new mongoose.Schema({
     toJSON: {
       getters: true
     },
+    id: false
 });
 
 thoughtSchema.virtual('reactionCount').get(function () {

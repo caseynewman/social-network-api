@@ -96,22 +96,26 @@ router.post('/:thoughtId/reactions', async (req, res) => {
 });
 
 // DELETE to pull and remove a reaction by the reaction's reactionId value -- what if thought has multiple reactions?
-router.delete('/:thoughtId/reactions', async (req, res) => {
-    const { thoughtId } = req.params;
-    const { reactionId } = req.body;
+router.delete('/:thoughtId/reactions/:reactionId', async (req, res) => {
+    const { thoughtId, reactionId } = req.params;
     try {
         const thought = await Thought.findByIdAndUpdate(thoughtId, {
             $pull: {
-                reactions: reactionId
+                reactions: {
+                    reactionId
+                }
             }
         }, {
             new: true
         });
+        if (!thought) {
+          return res.status(404).json({ message: 'Thought not found' });
+        }
         res.status(200).json({ message: 'Reaction removed successfully!' });
     } catch (err) {
         res.status(500).json(err);
     }
-})
+});
 
 
 module.exports = router

@@ -115,6 +115,4 @@ router.delete('/:userId/friends/:friendId', async (req, res) => {
 
 module.exports = router
 
-//TODO: delete route for reactions
 //TODO: bonus route
-//TODO: fix date format
