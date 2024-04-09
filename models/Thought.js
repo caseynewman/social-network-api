@@ -20,10 +20,10 @@ const reactionSchema = new mongoose.Schema({
     },
 }, {
     toJSON: {
-      getters: true
+        getters: true
     },
     _id: false
-  });
+});
 
 const thoughtSchema = new mongoose.Schema({
     thoughtText: {
@@ -41,9 +41,9 @@ const thoughtSchema = new mongoose.Schema({
     },
     username: { type: String, required: true },
     reactions: [reactionSchema],
-},  {
+}, {
     toJSON: {
-      getters: true
+        getters: true
     },
     id: false
 });

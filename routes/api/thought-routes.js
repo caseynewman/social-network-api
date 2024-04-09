@@ -109,13 +109,12 @@ router.delete('/:thoughtId/reactions/:reactionId', async (req, res) => {
             new: true
         });
         if (!thought) {
-          return res.status(404).json({ message: 'Thought not found' });
+            return res.status(404).json({ message: 'Thought not found' });
         }
         res.status(200).json({ message: 'Reaction removed successfully!' });
     } catch (err) {
         res.status(500).json(err);
     }
 });
-
 
 module.exports = router

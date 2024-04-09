@@ -50,6 +50,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE user by _id
+// BONUS: remove user's associated thoughts when deleted
 router.delete('/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -67,10 +68,6 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json(err);
     }
 });
-
-// BONUS: remove user's associated thoughts when deleted
-
-
 
 
 // endpoint /api/users/:userId/friends/:friendId
@@ -111,8 +108,4 @@ router.delete('/:userId/friends/:friendId', async (req, res) => {
     }
 });
 
-
-
 module.exports = router
-
-//TODO: bonus route
