@@ -14,4 +14,4 @@ Mongo, Mongoose, and Express are needed for this project. I also imported Day.js
 
 The Social Network API allows users to create an account with a username and their email address. They can update their account information, post thoughts, reactions to other users' thoughts, and friend other users on the application. They can delete their reactions and their thoughts at any time. If they choose to delete their account, it will delete all thoughts they've had as well. Users can see how many friends they have and remove friends at any time. They can also see the number of reactions associated with each thought.
 
-[Walkthrough Video]()
+[Walkthrough Video](https://drive.google.com/file/d/17CBWFzgBke__znjGeV8tnvftesjcL6LH/view)
